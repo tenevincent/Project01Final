@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MoviesApp</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="actionbar_title_main_activity">Movies</string>
+    <string name="actionbar_details_tile">Movies Details</string>
+</resources>
