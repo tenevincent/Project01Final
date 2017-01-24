@@ -5,5 +5,5 @@
     <string name="actionbar_title_main_activity">Movies</string>
     <string name="actionbar_details_tile">Movies Details</string>
     <string name="title_sortby_most_popular">Sort by most popular</string>
-    <string name="title_sortby_top_rated">Sort by by top rated</string>
+    <string name="title_sortby_top_rated">Sort by top rated</string>
 </resources>
