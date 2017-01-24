@@ -4,4 +4,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="actionbar_title_main_activity">Movies</string>
     <string name="actionbar_details_tile">Movies Details</string>
+    <string name="title_sortby_most_popular">Sort by most popular</string>
+    <string name="title_sort_by_by_top_rated">Sort by by top rated</string>
 </resources>

@@ -3,7 +3,11 @@ package vincent.moviesapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,10 +21,43 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void onClickDetails(View view) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main_activity, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_sortby_popular:
+                //  handleSortByMostPopular();
+                Toast.makeText(MainActivity.this, "menu_sortby_popular", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent("vincent.moviesapp.MoviesDetailsActivity");
+                startActivity(intent);
+
+                return true;
+            case R.id.menu_sortby_toprated:
+
+                Toast.makeText(MainActivity.this, "menu_sortby_toprated", Toast.LENGTH_LONG).show();
+                //  handleSortByTopRated();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /*
+    public void onClickDetails(View view) {
         Intent intent = new Intent("vincent.moviesapp.MoviesDetailsActivity");
         startActivity(intent);
+    }
+    */
+
+
+
+
 
     }
-}
+
