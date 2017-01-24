@@ -13,13 +13,14 @@ import vincent.moviesapp.R;
 
 
 
+
+
 public class MainFragment extends Fragment {
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_details, container,false);
     }
 
