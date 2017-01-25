@@ -18,21 +18,16 @@ public class Movie {
     private  boolean isaVideo;
     private  float voteAverage;
 
+    public float getPopularity() {
+        return popularity;
+    }
 
-
+    public float getVoteAverage() {
+        return voteAverage;
+    }
 
     private  String posterPath;
     private  boolean isAdultMovie;
     private  String  overView;
     private Date releaseDate;
-
-
-
-
-
-
-
-
-
-
 }
