@@ -9,6 +9,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.net.URL;
+
+import vincent.moviesapp.model.AsyncMovieResponse;
+import vincent.moviesapp.model.MoviesQueryTask;
+import vincent.moviesapp.model.NetworkUtils;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -18,6 +24,26 @@ public class MainActivity extends AppCompatActivity {
 
         String title = this.getString(R.string.actionbar_title_main_activity);
         MovieHelper.setMovieAppActionBarTitle(this.getSupportActionBar(), title);
+
+
+        // TODO
+
+        /*
+        String githubQuery = "http://api.themoviedb.org/3/movie/popular?api_key=[YOUR_API_KEY]";
+        URL githubSearchUrl = NetworkUtils.buildUrl(githubQuery);
+
+
+        MoviesQueryTask queryTask = new MoviesQueryTask( new AsyncMovieResponse()
+        {
+            @Override
+            public void processMoviesQueryResults(String output) {
+              // TODO
+            }
+        }
+        );
+        queryTask.execute(githubSearchUrl) ;
+        */
+
 
     }
 
