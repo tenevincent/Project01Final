@@ -3,11 +3,13 @@ package vincent.moviesapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+import android.support.v7.widget.RecyclerView;
 
 import java.net.URL;
 
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
         String title = this.getString(R.string.actionbar_title_main_activity);
         MovieHelper.setMovieAppActionBarTitle(this.getSupportActionBar(), title);
+
+
 
 
         // TODO

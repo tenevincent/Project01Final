@@ -5,14 +5,12 @@
     tools:context="vincent.moviesapp.fragments.MainFragment">
 
     <!-- TODO: Update blank fragment layout -->
-<GridView
+<android.support.v7.widget.RecyclerView
     android:id="@+id/gridViewMovies"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_bright"
-    android:numColumns="2">
-
-</GridView>
+    android:background="@android:color/white"
+    android:numColumns="2" />
 
 
     <!--
