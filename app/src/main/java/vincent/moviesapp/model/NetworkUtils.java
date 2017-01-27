@@ -18,10 +18,13 @@ import java.util.Scanner;
  */
 public class NetworkUtils {
 
-    final static String GITHUB_BASE_URL =
-            "https://api.github.com/search/repositories";
+    final static String MOVIE_POPULAR_BASE_URL =  "http://api.themoviedb.org/3/movie/popular";
+    final static String MOVIE_BY_HIGHEST_RATE_BASE_URL =  "http://api.themoviedb.org/3/movie/popular";
 
-    final static String PARAM_QUERY = "q";
+
+    final static String PARAM_QUERY = "api_key";
+    final static String api_key_value = "810f83d9a006d9817f993a80e48ad029";
+
 
     /*
      * The sort field. One of stars, forks, or updated.
@@ -33,14 +36,18 @@ public class NetworkUtils {
     /**
      * Builds the URL used to query Github.
      *
-     * @param githubSearchQuery The keyword that will be queried for.
      * @return The URL to use to query the weather server.
      */
-    public static URL buildUrl(String githubSearchQuery) {
+    public static URL buildUrl(EUrlRequestType eUrlQueryType) {
+
+        String strUrlQuery =MOVIE_POPULAR_BASE_URL ;
+        if(eUrlQueryType == EUrlRequestType.BY_TOP_RATED)
+            strUrlQuery = MOVIE_BY_HIGHEST_RATE_BASE_URL;
+
+
         // COMPLETED (1) Fill in this method to build the proper Github query URL
-        Uri builtUri = Uri.parse(GITHUB_BASE_URL).buildUpon()
-                .appendQueryParameter(PARAM_QUERY, githubSearchQuery)
-                .appendQueryParameter(PARAM_SORT, sortBy)
+        Uri builtUri = Uri.parse(strUrlQuery).buildUpon()
+                .appendQueryParameter(PARAM_QUERY, api_key_value)
                 .build();
 
         URL url = null;

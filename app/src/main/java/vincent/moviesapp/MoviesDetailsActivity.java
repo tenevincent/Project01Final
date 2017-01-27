@@ -17,11 +17,4 @@ public class MoviesDetailsActivity extends AppCompatActivity {
 
     }
 
-
-
-
-
-
-
-
 }
