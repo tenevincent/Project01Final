@@ -10,12 +10,24 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="vincent.moviesapp.MainActivity">
 
+<!--
     <fragment
         android:id="@+id/fragmentA"
         android:name="vincent.moviesapp.fragments.MainFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_main"/>
+        tools:layout="@layout/fragment_main"/> -->
+
+
+    <!-- TODO: Update blank fragment layout -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/gridViewMovies"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:numColumns="2" />
+
+
 
 
 </RelativeLayout>

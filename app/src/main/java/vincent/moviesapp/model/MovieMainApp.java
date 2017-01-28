@@ -73,6 +73,7 @@ public class MovieMainApp {
                 boolean video = item.getBoolean("video");
                 float vote_average = (float) item.getDouble("vote_average");
 
+                /*
                 Date date  =null;
                 try {
                     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -80,9 +81,13 @@ public class MovieMainApp {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+                */
 
-                Movie movie = new Movie(poster_path, adult,overview,date, genre_ids, id, original_title, original_language, title, backdrop_path, popularity, vote_count, video, vote_average);
+
+
+                Movie movie = new Movie(poster_path, adult,overview,release_date, genre_ids, id, original_title, original_language, title, backdrop_path, popularity, vote_count, video, vote_average);
                 this.listeOfMovies.add(movie);
+
 
             }
 

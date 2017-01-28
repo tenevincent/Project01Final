@@ -1,5 +1,6 @@
 package vincent.moviesapp.model;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 
 import java.io.IOException;
@@ -12,9 +13,13 @@ import java.net.URL;
 public class MoviesQueryTask  extends AsyncTask<URL, Void, String>  {
 
     AsyncMovieResponse responseQueryTask ;
+    Activity activity;
 
-    public MoviesQueryTask(AsyncMovieResponse responseTask) {
-        responseQueryTask = responseTask;
+
+    public MoviesQueryTask(Activity activity, AsyncMovieResponse responseTask) {
+
+        this.activity = activity;
+        this.responseQueryTask = responseTask;
     }
 
 
@@ -35,15 +40,7 @@ public class MoviesQueryTask  extends AsyncTask<URL, Void, String>  {
     @Override
     protected void onPostExecute(String moviesSearchResults) {
 
-
-        responseQueryTask.processMoviesQueryResults(moviesSearchResults);
-
-
-       // if (moviesSearchResults != null && !moviesSearchResults.equals("")) {
-           // mSearchResultsTextView.setText(moviesSearchResults);
-       // }
-
-
+        responseQueryTask.processMoviesQueryResults(this.activity,  moviesSearchResults);
     }
 
 

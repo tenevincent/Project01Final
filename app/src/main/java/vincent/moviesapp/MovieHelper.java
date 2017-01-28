@@ -8,7 +8,6 @@ import android.support.v7.app.ActionBar;
 
 public class MovieHelper {
 
-
     public static void setMovieAppActionBarTitle(ActionBar actionbar, String title) {
         if(null != actionbar)
             actionbar.setTitle(title);

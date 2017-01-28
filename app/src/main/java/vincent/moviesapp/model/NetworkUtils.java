@@ -21,6 +21,16 @@ public class NetworkUtils {
     final static String MOVIE_POPULAR_BASE_URL =  "http://api.themoviedb.org/3/movie/popular";
     final static String MOVIE_BY_HIGHEST_RATE_BASE_URL =  "http://api.themoviedb.org/3/movie/popular";
 
+    private static   String base_img_duration_url = "http://api.themoviedb.org/3/movie/MOVIE_ID";
+
+    private static   String base_videos_url = "http://api.themoviedb.org/3/movie/MOVIE_ID/videos"; // videso URL
+    private static   String base_reviews_url = "http://api.themoviedb.org/3/movie/MOVIE_ID/reviews"; // reviews URL
+
+    private static   String base_youtube_base_url = "https://www.youtube.com/watch"; // reviews URL
+    final static String YOU_TUBE_QUERY = "v";
+
+
+
 
     final static String PARAM_QUERY = "api_key";
     final static String api_key_value = "810f83d9a006d9817f993a80e48ad029";
@@ -32,6 +42,30 @@ public class NetworkUtils {
      */
     final static String PARAM_SORT = "sort";
     final static String sortBy = "stars";
+
+
+    /** Gets the URL for visualize the youtube trailer
+     *
+     * @param youtubeKeyValue youtube trailer key value
+     * @return youtube trailer url
+     */
+    public static URL getYoutubeTrailerURL(String youtubeKeyValue) {
+
+      String  strUrlQuery = base_youtube_base_url;
+        // COMPLETED (1) Fill in this method to build the proper Github query URL
+        Uri builtUri = Uri.parse(strUrlQuery).buildUpon()
+                .appendQueryParameter(YOU_TUBE_QUERY, youtubeKeyValue)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return url;
+    }
+
 
     /**
      * Builds the URL used to query Github.
@@ -59,6 +93,73 @@ public class NetworkUtils {
 
         return url;
     }
+
+
+    public static  URL getMovieDuration(int movieid){
+
+        String mainURL = base_img_duration_url;
+        mainURL = mainURL.replace("MOVIE_ID",new Integer(movieid).toString());
+
+        // COMPLETED (1) Fill in this method to build the proper Github query URL
+        Uri builtUri = Uri.parse(mainURL).buildUpon()
+                .appendQueryParameter(PARAM_QUERY, api_key_value)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return  url;
+    }
+
+
+    public static  URL getMovieVideoURL(int movieid){
+
+        String mainURL = base_videos_url;
+        mainURL = mainURL.replace("MOVIE_ID",new Integer(movieid).toString());
+
+        // COMPLETED (1) Fill in this method to build the proper Github query URL
+        Uri builtUri = Uri.parse(mainURL).buildUpon()
+                .appendQueryParameter(PARAM_QUERY, api_key_value)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return  url;
+    }
+
+
+
+
+
+    public static  URL getMovieReviewsURL(int movieid){
+
+        String mainURL = base_reviews_url;
+        mainURL = mainURL.replace("MOVIE_ID",new Integer(movieid).toString());
+
+        // COMPLETED (1) Fill in this method to build the proper Github query URL
+        Uri builtUri = Uri.parse(mainURL).buildUpon()
+                .appendQueryParameter(PARAM_QUERY, api_key_value)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return  url;
+    }
+
+
+
+
 
     /**
      * This method returns the entire result from the HTTP response.

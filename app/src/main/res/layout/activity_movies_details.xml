@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent">
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_movies_details"
@@ -11,11 +15,169 @@
     tools:context="vincent.moviesapp.MoviesDetailsActivity">
 
 
-    <fragment
+<!--
+     <fragment
         android:id="@+id/fragmentA"
         android:name="vincent.moviesapp.fragments.DetailsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_details"/>
+        tools:layout="@layout/fragment_details"/> -->
+
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/textviewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@android:color/holo_blue_light"
+        android:textSize="40dp"
+        android:gravity="center_vertical"
+        android:text="Details View"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:id="@+id/imageViewDetails"
+        android:layout_width="200dp"
+        android:layout_height="300dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@id/textviewTitle"
+        android:layout_alignLeft="@id/textviewTitle" />
+
+    <TextView
+        android:id="@+id/textViewReleaseDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textviewTitle"
+        android:textSize="19dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toRightOf="@id/imageViewDetails" />
+
+    <TextView
+        android:id="@+id/textViewMovieDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/textViewReleaseDate"
+        android:layout_alignLeft="@id/textViewReleaseDate" />
+
+
+    <TextView
+        android:id="@+id/textViewVoteAverage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/textViewMovieDuration"
+        android:layout_alignLeft="@id/textViewMovieDuration" />
+
+    <Button
+        android:id="@+id/btnMarkAsFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/mark_as_favorite"
+        android:background="#81F781"
+        android:layout_below="@id/textViewVoteAverage"
+        android:layout_alignLeft="@id/textViewVoteAverage" />
+
+
+
+
+    <TextView
+        android:id="@+id/textViewOverview"
+        android:layout_below="@id/imageViewDetails"
+        android:layout_alignLeft="@+id/imageViewDetails"
+        android:textSize="14dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textViewTrailers"
+        android:layout_below="@id/textViewOverview"
+        android:layout_alignLeft="@+id/textViewOverview"
+        android:textSize="22dp"
+        android:text="@string/trailers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View android:id="@+id/divisorOverview"
+        android:layout_height="2dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/textViewTrailers"
+        android:layout_alignLeft="@+id/textViewTrailers"
+        android:layout_width="fill_parent"
+        android:background="#505050" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayoutTrailer01"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewTrailers"
+        android:layout_alignLeft="@+id/textViewTrailers">
+
+        <ImageView
+            android:id="@+id/imageTrailer01"
+            android:layout_width="wrap_content"
+            android:onClick="onPlayMovieTrailer01"
+            android:src="@drawable/play_button"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textViewTrailer01"
+            android:text="@string/trailer_1"
+            android:textSize="18dp"
+            android:layout_width="wrap_content"
+            android:onClick="onPlayMovieTrailer01"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View android:id="@+id/divisorOverview02"
+        android:layout_height="2dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/linearLayoutTrailer01"
+        android:layout_alignLeft="@+id/linearLayoutTrailer01"
+        android:layout_width="fill_parent"
+        android:background="#505050" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutTrailer02"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/divisorOverview02"
+        android:layout_alignLeft="@+id/divisorOverview02">
+
+        <ImageView
+            android:id="@+id/imageTrailer02"
+            android:layout_width="wrap_content"
+            android:src="@drawable/play_button"
+            android:onClick="onPlayMovieTrailer02"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textViewTrailer02"
+            android:text="@string/trailer_2"
+            android:textSize="18dp"
+            android:onClick="onPlayMovieTrailer02"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+
 
 </RelativeLayout>
+
+
+</ScrollView>
