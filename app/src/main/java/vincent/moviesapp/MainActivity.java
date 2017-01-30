@@ -35,10 +35,11 @@ public class MainActivity extends AppCompatActivity {
         String title = this.getString(R.string.actionbar_title_main_activity);
         MovieHelper.setMovieAppActionBarTitle(this.getSupportActionBar(), title);
 
-
         // when the device is rotated a query showld not be hit again
-        if(null == movieApp)
+        if(null == movieApp && NetworkUtils.checkInternetConnection(this))
             queryMoviesFromDatabase();
+        else
+            Toast.makeText(this,"No Internet Connection is available - Main Activity",Toast.LENGTH_LONG).show();
     }
 
 
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void queryMoviesFromDatabase() {
 
         URL githubSearchUrl = NetworkUtils.buildUrl(EUrlRequestType.BY_TOP_RATED);
@@ -77,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
                 movieApp = new MovieMainApp(output);
 
-
                 RecyclerView recyclerView = (RecyclerView) activity.findViewById(R.id.gridViewMovies);
                 recyclerView.addItemDecoration(new MarginDecoration(activity.getBaseContext()));
                 recyclerView.setHasFixedSize(false);
@@ -85,14 +86,21 @@ public class MainActivity extends AppCompatActivity {
                 // First param is number of columns and second param is orientation i.e Vertical or Horizontal
                 StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(gridLayoutManager);
-
                 //  recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
                 recyclerView.setAdapter(new ImageAdapter(activity.getBaseContext(),movieApp.getListeOfMovies()));
             }
         }
         );
 
-        queryTask.execute(githubSearchUrl) ;
+       if(NetworkUtils.checkInternetConnection(this)){
+            queryTask.execute(githubSearchUrl) ;
+        }
+        else{
+            Toast.makeText(this,"No Internet Connection is available - Main Activity",Toast.LENGTH_LONG).show();
+        }
+
+
+
     }
 
 

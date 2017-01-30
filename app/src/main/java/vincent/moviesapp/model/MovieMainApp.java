@@ -30,11 +30,13 @@ public class MovieMainApp {
 
     private void extractMoviesQuery(String movieQuery){
 
+        if(null == movieQuery)
+            return;
+
 
         try {
 
             JSONObject weatherObj  = new JSONObject(movieQuery);
-
 
             this.page = weatherObj.getInt("page");
             this.totalresults = weatherObj.getInt("total_results");

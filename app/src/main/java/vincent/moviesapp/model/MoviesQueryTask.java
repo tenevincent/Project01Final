@@ -2,9 +2,12 @@ package vincent.moviesapp.model;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-
+import android.view.View;
+import android.widget.ProgressBar;
 import java.io.IOException;
 import java.net.URL;
+import vincent.moviesapp.R;
+
 
 
 /**
@@ -14,14 +17,24 @@ public class MoviesQueryTask  extends AsyncTask<URL, Void, String>  {
 
     AsyncMovieResponse responseQueryTask ;
     Activity activity;
+    ProgressBar pogressBar01 = null;
 
 
     public MoviesQueryTask(Activity activity, AsyncMovieResponse responseTask) {
 
         this.activity = activity;
         this.responseQueryTask = responseTask;
+        pogressBar01 = (ProgressBar)activity.findViewById(R.id.progressBar);
     }
 
+
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        if(null != pogressBar01)
+            pogressBar01.setVisibility(View.VISIBLE);
+    }
 
     @Override
     protected String doInBackground(URL... params) {
@@ -41,6 +54,9 @@ public class MoviesQueryTask  extends AsyncTask<URL, Void, String>  {
     protected void onPostExecute(String moviesSearchResults) {
 
         responseQueryTask.processMoviesQueryResults(this.activity,  moviesSearchResults);
+
+        if(null != pogressBar01)
+             pogressBar01.setVisibility(View.INVISIBLE);
     }
 
 

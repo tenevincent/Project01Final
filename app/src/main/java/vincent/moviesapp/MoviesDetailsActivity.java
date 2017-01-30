@@ -160,10 +160,16 @@ public class MoviesDetailsActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         });
-        queryTask.execute(githubSearchUrl) ;
+
+        if(NetworkUtils.checkInternetConnection(this)){
+            queryTask.execute(githubSearchUrl) ;
+        }
+        else{
+            Toast.makeText(this,"No Internet Connection is available",Toast.LENGTH_LONG).show();
+        }
+
 
 
 
@@ -180,6 +186,10 @@ public class MoviesDetailsActivity extends AppCompatActivity {
                 @Override
                 public void processMoviesQueryResults(Activity context, String output) {
 
+                    if(null == output){
+                        return;
+                    }
+
                     try {
                         JSONObject movieJsonObject  = new JSONObject(output);
                         int runtime = movieJsonObject.getInt("runtime");
@@ -187,10 +197,8 @@ public class MoviesDetailsActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                     TextView duration01 =   (TextView)findViewById(R.id.textViewMovieDuration);
                     duration01.setText(movie.getDuration());
-
                 }
             });
             queryTask.execute(githubSearchUrl) ;
@@ -210,11 +218,12 @@ public class MoviesDetailsActivity extends AppCompatActivity {
         Intent videoClient = new Intent(Intent.ACTION_VIEW);
         videoClient.setData(Uri.parse(githubSearchUrl.toString()));
         startActivity(videoClient);
-
-
     }
 
+
+
     public void onPlayMovieTrailer02(View view) {
+
         String urlYoutube = movie.getListeOfTrailers().get(1);
         URL githubSearchUrl = NetworkUtils.getYoutubeTrailerURL(urlYoutube);
 
@@ -223,7 +232,7 @@ public class MoviesDetailsActivity extends AppCompatActivity {
         Intent videoClient = new Intent(Intent.ACTION_VIEW);
         videoClient.setData(Uri.parse(githubSearchUrl.toString()));
         startActivity(videoClient);
-
-
     }
+
+
 }

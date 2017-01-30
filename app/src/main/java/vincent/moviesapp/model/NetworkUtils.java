@@ -4,6 +4,9 @@ package vincent.moviesapp.model;
  * Created by Tene on 25.01.2017.
  */
 
+import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 
 import java.io.IOException;
@@ -29,9 +32,6 @@ public class NetworkUtils {
     private static   String base_youtube_base_url = "https://www.youtube.com/watch"; // reviews URL
     final static String YOU_TUBE_QUERY = "v";
 
-
-
-
     final static String PARAM_QUERY = "api_key";
     final static String api_key_value = "810f83d9a006d9817f993a80e48ad029";
 
@@ -42,6 +42,25 @@ public class NetworkUtils {
      */
     final static String PARAM_SORT = "sort";
     final static String sortBy = "stars";
+
+    /** Check whether an internet connection is available
+     *
+     * @param activity current activity
+     * @return true if an internet connection is available
+     */
+    public static boolean checkInternetConnection(Activity activity) {
+        ConnectivityManager cm = (ConnectivityManager)activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 
 
     /** Gets the URL for visualize the youtube trailer
@@ -175,7 +194,6 @@ public class NetworkUtils {
         try {
 
             InputStream in = urlConnection.getInputStream();
-
             Scanner scanner = new Scanner(in);
             scanner.useDelimiter("\\A");
 
