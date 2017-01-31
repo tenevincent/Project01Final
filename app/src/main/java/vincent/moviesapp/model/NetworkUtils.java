@@ -7,6 +7,7 @@ package vincent.moviesapp.model;
 import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 
 import java.io.IOException;
@@ -49,15 +50,13 @@ public class NetworkUtils {
      * @return true if an internet connection is available
      */
     public static boolean checkInternetConnection(Activity activity) {
+
+        // https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html#DetermineType
         ConnectivityManager cm = (ConnectivityManager)activity.getSystemService(Context.CONNECTIVITY_SERVICE);
-        // test for connection
-        if (cm.getActiveNetworkInfo() != null
-                && cm.getActiveNetworkInfo().isAvailable()
-                && cm.getActiveNetworkInfo().isConnected()) {
-            return true;
-        } else {
-            return false;
-        }
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        return  isConnected;
     }
 
 
@@ -192,11 +191,9 @@ public class NetworkUtils {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
         try {
-
             InputStream in = urlConnection.getInputStream();
             Scanner scanner = new Scanner(in);
             scanner.useDelimiter("\\A");
-
             boolean hasInput = scanner.hasNext();
             if (hasInput) {
                 return scanner.next();

@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import vincent.moviesapp.R;
 
@@ -18,6 +21,8 @@ public class MoviesQueryTask  extends AsyncTask<URL, Void, String>  {
     AsyncMovieResponse responseQueryTask ;
     Activity activity;
     ProgressBar pogressBar01 = null;
+    int code = 0;
+    URL searchUrl  =null;
 
 
     public MoviesQueryTask(Activity activity, AsyncMovieResponse responseTask) {
@@ -39,8 +44,22 @@ public class MoviesQueryTask  extends AsyncTask<URL, Void, String>  {
     @Override
     protected String doInBackground(URL... params) {
 
-        URL searchUrl = params[0];
+        searchUrl = params[0];
         String moviesSearchResults = null;
+
+        try {
+            HttpURLConnection connection = (HttpURLConnection) searchUrl.openConnection();
+            code = connection.getResponseCode();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+
+        if(code == 200) {
+            // reachable
+        } else {
+        }
+
+
         try {
             moviesSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
         } catch (IOException e) {
@@ -57,6 +76,11 @@ public class MoviesQueryTask  extends AsyncTask<URL, Void, String>  {
 
         if(null != pogressBar01)
              pogressBar01.setVisibility(View.INVISIBLE);
+
+        if(code == 200){
+            Toast.makeText(activity,"The server " + searchUrl.toString() +
+                  " is not reachable!"  ,Toast.LENGTH_LONG).show();
+        }
     }
 
 
