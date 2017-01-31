@@ -68,12 +68,15 @@ public class MoviesQueryTask  extends AsyncTask<URL, Void, String>  {
         return moviesSearchResults;
     }
 
+
+
+
+    
     // COMPLETED (3) Override onPostExecute to display the results in the TextView
     @Override
     protected void onPostExecute(String moviesSearchResults) {
 
         responseQueryTask.processMoviesQueryResults(this.activity,  moviesSearchResults);
-
         if(null != pogressBar01)
              pogressBar01.setVisibility(View.INVISIBLE);
 
