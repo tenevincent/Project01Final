@@ -24,7 +24,9 @@ import vincent.moviesapp.model.NetworkUtils;
 
 public class MainActivity extends AppCompatActivity {
 
-    MovieMainApp movieApp;
+
+
+    public  static  final  String MOVIE_DETAIL_KEY = "movie";
 
 
     @Override
@@ -35,11 +37,19 @@ public class MainActivity extends AppCompatActivity {
         String title = this.getString(R.string.actionbar_title_main_activity);
         MovieHelper.setMovieAppActionBarTitle(this.getSupportActionBar(), title);
 
+
+        MovieMainApp movieApp = ((MovieApplication)this.getApplication()).getMovieMainApp();
+
         // when the device is rotated a query showld not be hit again
-        if(null == movieApp && NetworkUtils.checkInternetConnection(this))
-            queryMoviesFromDatabase();
-        else
-            Toast.makeText(this,"No Internet Connection is available - Main Activity",Toast.LENGTH_LONG).show();
+        if(null == movieApp && NetworkUtils.checkInternetConnection(this)){
+            queryMoviesFromDatabase(EUrlRequestType.BY_TOP_RATED);
+            Toast.makeText(MainActivity.this, "movieApp IS NULL", Toast.LENGTH_LONG).show();
+        }
+        else if (null != movieApp){
+            updateRecyclerViewUI(this);
+            Toast.makeText(MainActivity.this, "movieApp non NULL", Toast.LENGTH_LONG).show();
+        }
+
     }
 
 
@@ -56,12 +66,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_sortby_popular:
                 //  handleSortByMostPopular();
                 Toast.makeText(MainActivity.this, "menu_sortby_popular", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent("vincent.moviesapp.MoviesDetailsActivity");
-                startActivity(intent);
+                queryMoviesFromDatabase(EUrlRequestType.BY_MOST_POPULAR);
                 return true;
             case R.id.menu_sortby_toprated:
                 Toast.makeText(MainActivity.this, "menu_sortby_toprated", Toast.LENGTH_LONG).show();
-                //  handleSortByTopRated();
+                queryMoviesFromDatabase(EUrlRequestType.BY_TOP_RATED);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -69,25 +78,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void queryMoviesFromDatabase() {
+    private void queryMoviesFromDatabase(EUrlRequestType urlRequestBy) {
 
-        URL githubSearchUrl = NetworkUtils.buildUrl(EUrlRequestType.BY_TOP_RATED);
+        URL githubSearchUrl = NetworkUtils.buildUrl(urlRequestBy);
+
         MoviesQueryTask queryTask = new MoviesQueryTask(this,  new AsyncMovieResponse()
         {
             @Override
             public void processMoviesQueryResults(Activity activity, String output) {
 
-                movieApp = new MovieMainApp(output);
-
-                RecyclerView recyclerView = (RecyclerView) activity.findViewById(R.id.gridViewMovies);
-                recyclerView.addItemDecoration(new MarginDecoration(activity.getBaseContext()));
-                recyclerView.setHasFixedSize(false);
-
-                // First param is number of columns and second param is orientation i.e Vertical or Horizontal
-                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-                recyclerView.setLayoutManager(gridLayoutManager);
-                //  recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
-                recyclerView.setAdapter(new ImageAdapter(activity.getBaseContext(),movieApp.getListeOfMovies()));
+                ((MovieApplication)activity.getApplication()).setMovieMainApp(new MovieMainApp(output));
+                updateRecyclerViewUI(activity);
             }
         }
         );
@@ -98,13 +99,23 @@ public class MainActivity extends AppCompatActivity {
         else{
             Toast.makeText(this,"No Internet Connection is available - Main Activity",Toast.LENGTH_LONG).show();
         }
+    }
 
+    private void updateRecyclerViewUI(Activity activity) {
+        //  MovieMainApp movieApp = ((MovieApplication)activity.getApplication()).getMovieMainApp();
+        RecyclerView recyclerView = (RecyclerView) activity.findViewById(R.id.gridViewMovies);
+        recyclerView.addItemDecoration(new MarginDecoration(activity.getBaseContext()));
+        recyclerView.setHasFixedSize(false);
 
-
+        // First param is number of columns and second param is orientation i.e Vertical or Horizontal
+        StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        //  recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
+        ImageAdapter imageAdapter = new ImageAdapter(activity.getBaseContext());
+        recyclerView.setAdapter(imageAdapter);
+        imageAdapter.notifyDataSetChanged();
     }
 
 
-
-
-    }
+}
 

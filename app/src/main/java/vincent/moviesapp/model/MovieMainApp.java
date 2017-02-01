@@ -104,6 +104,23 @@ public class MovieMainApp {
 
 
 
+    public Movie getMovieById(int movieId) {
+
+        Movie movie = null ;
+        if(null == listeOfMovies){
+            return movie;
+        }
+
+            for (int i=0; i <listeOfMovies.size();i++){
+                if(listeOfMovies.get(i).getId() == movieId){
+                    movie = listeOfMovies.get(i);
+                    break;
+                }
+            }
+
+        return movie;
+    }
+
 
 
 

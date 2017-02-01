@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import vincent.moviesapp.model.AsyncMovieResponse;
 import vincent.moviesapp.model.EUrlRequestType;
 import vincent.moviesapp.model.Movie;
+import vincent.moviesapp.model.MovieMainApp;
 import vincent.moviesapp.model.MoviesQueryTask;
 import vincent.moviesapp.model.NetworkUtils;
 
@@ -43,13 +44,26 @@ public class MoviesDetailsActivity extends AppCompatActivity {
         MovieHelper.setMovieAppActionBarTitle(this.getSupportActionBar(), title);
 
 
-        Bundle bundle = this.getIntent().getExtras();
+        // Gets the bundle
+        Bundle bundleExtras = this.getIntent().getExtras();
+        if(null == bundleExtras){
+            return;
+        }
 
-        String value = bundle.getString("movieApp") ;
+
+        int movieIdBundle = bundleExtras.getInt(MainActivity.MOVIE_DETAIL_KEY, Movie.INVALID_MOVIE_ID);
+
+        // check invalid movie ID
+        if(movieIdBundle == Movie.INVALID_MOVIE_ID){
+            Toast.makeText(this,"The current movie can not be found in the database!",Toast.LENGTH_LONG).show();
+            return;
+        }
 
 
-        movie = bundle.getParcelable("movie");
 
+        MovieMainApp movieMainApp =   ((MovieApplication)this.getApplication()).getMovieMainApp();
+
+        movie = movieMainApp.getMovieById(movieIdBundle) ;
         // Sets the title
         TextView textTitle = (TextView)findViewById(R.id.textviewTitle);
         textTitle.setText(movie.getTitle());
@@ -76,11 +90,9 @@ public class MoviesDetailsActivity extends AppCompatActivity {
 
         QueryMovieDuration(movie, duration);
 
-
         QueryMovieTrailers(movie);
 
         QueryMovieReviews(movie);
-
 
 
     }
@@ -88,19 +100,23 @@ public class MoviesDetailsActivity extends AppCompatActivity {
     private void QueryMovieTrailers(final Movie movie) {
 
         if(movie.getListeOfTrailers() != null ){
+            Toast.makeText(this,"TRAILER NON NULL",Toast.LENGTH_LONG).show();
             return;
         }
 
+        Toast.makeText(this,"TRAILERS ARE NULL",Toast.LENGTH_LONG).show();
+
+
             URL githubSearchUrl = NetworkUtils.getMovieVideoURL(movie.getId());
+
             MoviesQueryTask queryTask = new MoviesQueryTask(this, new AsyncMovieResponse() {
                 @Override
                 public void processMoviesQueryResults(Activity context, String output) {
 
                     try {
+
                         JSONObject movieJsonObject  = new JSONObject(output);
-
                         ArrayList<String> listeTrailers = new ArrayList<String>();
-
                         JSONArray jsonResults = movieJsonObject.getJSONArray("results");
 
                         for (int i = 0; i < jsonResults.length(); i++){
@@ -141,9 +157,7 @@ public class MoviesDetailsActivity extends AppCompatActivity {
 
                 try {
                     JSONObject movieJsonObject  = new JSONObject(output);
-
                     ArrayList<String> listeReviews= new ArrayList<String>();
-
                     JSONArray jsonResults = movieJsonObject.getJSONArray("results");
 
                     for (int i = 0; i < jsonResults.length(); i++){
@@ -154,7 +168,6 @@ public class MoviesDetailsActivity extends AppCompatActivity {
                     }
 
                     movie.setListeOfReviews(listeReviews);
-
                     Toast.makeText(getBaseContext(), "Trailer Eviews: " + listeReviews.size() ,Toast.LENGTH_LONG).show();
 
                 } catch (JSONException e) {
@@ -181,6 +194,8 @@ public class MoviesDetailsActivity extends AppCompatActivity {
 
         if(movie.getDuration().equals("min") ){
 
+            Toast.makeText(this,"MOVIE DURATION NULL",Toast.LENGTH_LONG).show();
+
             URL githubSearchUrl = NetworkUtils.getMovieDuration(movie.getId());
             MoviesQueryTask queryTask = new MoviesQueryTask(this, new AsyncMovieResponse() {
                 @Override
@@ -189,7 +204,6 @@ public class MoviesDetailsActivity extends AppCompatActivity {
                     if(null == output){
                         return;
                     }
-
                     try {
                         JSONObject movieJsonObject  = new JSONObject(output);
                         int runtime = movieJsonObject.getInt("runtime");
@@ -206,10 +220,22 @@ public class MoviesDetailsActivity extends AppCompatActivity {
 
         else{
             duration.setText(movie.getDuration());
+            Toast.makeText(this,"MOVIE DURATION ALREADY LOADED",Toast.LENGTH_LONG).show();
+
         }
     }
 
     public void onPlayMovieTrailer01(View view) {
+
+        if(null == movie)
+            return;;
+
+        if(null == movie.getListeOfTrailers())
+            return;
+
+        if(movie.getListeOfTrailers().size() < 1) // there is not trailer 01
+            return;
+
 
         String urlYoutube = movie.getListeOfTrailers().get(0);
         URL githubSearchUrl = NetworkUtils.getYoutubeTrailerURL(urlYoutube);
@@ -223,6 +249,16 @@ public class MoviesDetailsActivity extends AppCompatActivity {
 
 
     public void onPlayMovieTrailer02(View view) {
+
+        if(null == movie)
+            return;;
+
+        if(null == movie.getListeOfTrailers())
+            return;
+
+        if(movie.getListeOfTrailers().size() < 2) // there is not trailer 02
+            return;
+
 
         String urlYoutube = movie.getListeOfTrailers().get(1);
         URL githubSearchUrl = NetworkUtils.getYoutubeTrailerURL(urlYoutube);

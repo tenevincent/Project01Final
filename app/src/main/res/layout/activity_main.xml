@@ -19,7 +19,7 @@
         tools:layout="@layout/fragment_main"/> -->
 
 
-    <ProgressBar
+<!--     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_centerHorizontal="true"
         android:visibility="invisible"
@@ -27,7 +27,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@android:style/Widget.ProgressBar.Large"
-        android:layout_marginRight="5dp" />
+        android:layout_marginRight="5dp" /> -->
+
 
 
     <!-- TODO: Update blank fragment layout -->

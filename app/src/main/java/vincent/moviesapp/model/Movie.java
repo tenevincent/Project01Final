@@ -7,17 +7,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringTokenizer;
 
-/**
- * Created by Tene on 25.01.2017.
- */
 
+/** Represents a movie object
+ *
+ */
 public class Movie implements Parcelable {
 
-
     private String base_image_url = "http://image.tmdb.org/t/p/w185/";
-
-
-
     private  String posterPath;
     private  boolean isAdultMovie;
     private  String  overView;
@@ -33,6 +29,9 @@ public class Movie implements Parcelable {
     private  boolean isaVideo;
     private  float voteAverage;
     private  String duration = "";
+
+    public  static  final int INVALID_MOVIE_ID = -11111;
+
 
     public ArrayList<String> getListeOfReviews() {
         return listeOfReviews;
@@ -138,14 +137,27 @@ public class Movie implements Parcelable {
         return backDropPath;
     }
 
+    /** Gets the popularity of the movie
+     *
+     * @return
+     */
     public float getPopularity() {
         return popularity;
     }
 
+    /** Count of voters
+     *
+     * @return Voters count
+     */
     public int getVoteCount() {
         return voteCount;
     }
 
+
+    /*** True if this movie is a video
+     *
+     * @return true/false
+     */
     public boolean isaVideo() {
         return isaVideo;
     }
@@ -181,10 +193,8 @@ public class Movie implements Parcelable {
 
         dest.writeString(duration);
         dest.writeFloat(voteAverage);
-
         dest.writeString(overView);
         dest.writeInt(id);
-
     }
 
 
@@ -198,11 +208,8 @@ public class Movie implements Parcelable {
 
         duration = in.readString();
         voteAverage = in.readFloat();
-
         overView = in.readString();
-
         id = in.readInt();
-
     }
 
 

@@ -7,7 +7,7 @@
     <string name="title_sortby_most_popular">Sort by most popular</string>
     <string name="title_sortby_top_rated">Sort by top rated</string>
     <string name="mark_as_favorite">MARK AS FAVORITE</string>
-    <string name="trailer_1">Trailer 1</string>
     <string name="trailers">Trailers:</string>
+    <string name="trailer_1">Trailer 1</string>
     <string name="trailer_2">Trailer 2</string>
 </resources>

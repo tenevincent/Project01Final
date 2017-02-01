@@ -23,7 +23,7 @@ import java.util.Scanner;
 public class NetworkUtils {
 
     final static String MOVIE_POPULAR_BASE_URL =  "http://api.themoviedb.org/3/movie/popular";
-    final static String MOVIE_BY_HIGHEST_RATE_BASE_URL =  "http://api.themoviedb.org/3/movie/popular";
+    final static String MOVIE_BY_HIGHEST_RATE_BASE_URL =  "http://api.themoviedb.org/3/movie/top_rated";
 
     private static   String base_img_duration_url = "http://api.themoviedb.org/3/movie/MOVIE_ID";
 

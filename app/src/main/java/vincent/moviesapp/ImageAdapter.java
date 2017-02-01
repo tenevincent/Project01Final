@@ -14,20 +14,20 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import vincent.moviesapp.model.Movie;
+import vincent.moviesapp.model.MovieMainApp;
 
-/**
- * Created by vincent on 26.01.2017.
+
+/** ImageAdapter for the Recyclerview
+ *
  */
-
 public class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
 
-    private ArrayList<Movie> movies;
+    private  MovieMainApp movieApp;
     private Context context ;
 
-    public ImageAdapter(Context ctx, ArrayList<Movie>  listofMovies) {
+    public ImageAdapter(Context ctx) {
         this.context = ctx;
-        this.movies = listofMovies;
-
+        movieApp = ((MovieApplication) this.context.getApplicationContext()).getMovieMainApp();
     }
 
     @Override
@@ -40,35 +40,38 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     public void onBindViewHolder(final ImageViewHolder holder, final int position) {
 
 
-        final Movie movie = movies.get(position);
-
+        final Movie movie = movieApp.getListeOfMovies().get(position);
         // Sets the title
         String title = movie.getTitle();
-
         // Sets the image
         Picasso.with(context).load(movie.getPosterAbsolutURL()).into(holder.imageView);
 
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
 
                 Toast.makeText(holder.imageView.getContext(), movie.getTitle(), Toast.LENGTH_SHORT).show();
 
+                // Start the Details Movie Activity for displaying details about the current movie!
                 Intent intent = new Intent("vincent.moviesapp.MoviesDetailsActivity");
-
                 Bundle bundle = new Bundle();
-                bundle.putParcelable("movie",movie);
+                bundle.putInt(MainActivity.MOVIE_DETAIL_KEY,movie.getId());
                 intent.putExtras(bundle);
 
-                context.startActivity(intent);
-
+                view.getContext().startActivity(intent);
             }
         });
     }
 
+
     @Override
     public int getItemCount() {
-        return movies.size();
+
+        if(null != movieApp && null != movieApp.getListeOfMovies())
+            return movieApp.getListeOfMovies().size();
+        else
+            return  0;
+
     }
 
 }

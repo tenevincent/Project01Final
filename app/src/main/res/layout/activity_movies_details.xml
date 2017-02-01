@@ -90,7 +90,7 @@
         android:id="@+id/textViewOverview"
         android:layout_below="@id/imageViewDetails"
         android:layout_alignLeft="@+id/imageViewDetails"
-        android:textSize="14dp"
+        android:textSize="18dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
