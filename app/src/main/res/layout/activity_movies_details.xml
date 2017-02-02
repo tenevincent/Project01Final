@@ -118,6 +118,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         android:layout_below="@id/textViewTrailers"
         android:layout_alignLeft="@+id/textViewTrailers">
 
@@ -152,6 +153,7 @@
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
+        android:visibility="invisible"
         android:layout_height="wrap_content"
         android:layout_below="@id/divisorOverview02"
         android:layout_alignLeft="@+id/divisorOverview02">

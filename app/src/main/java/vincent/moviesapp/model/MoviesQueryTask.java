@@ -71,16 +71,21 @@ public class MoviesQueryTask  extends AsyncTask<URL, Void, String>  {
     protected void onPostExecute(String moviesSearchResults) {
 
         if(unknownHostCode == 1){
-            int mNotificationId = 001;
-            String title = "Unreachable Server Hostname" ;
-            String message = "Unable to reach the movie database server!" ;
-            String [] events = new String[2];
-            events[0] = "Please make sure that you have an available internet connection!";
-            events[1] = "";
-            AppUtils.LaunchToastNotification(this.activity,mNotificationId,R.mipmap.ic_launcher,title,message,events);
 
-            String dlgMessage = message + events[0];
-            new AlertDialog.Builder(activity).setMessage(dlgMessage).setPositiveButton("OK", null).show();
+            try{
+                int mNotificationId = 001;
+                String title = "Unreachable Server Hostname" ;
+                String message = "Unable to reach the movie database server!" ;
+                String [] events = new String[2];
+                events[0] = "Please make sure that you have an available internet connection!";
+                events[1] = "";
+                AppUtils.LaunchToastNotification(this.activity,mNotificationId,R.mipmap.ic_launcher,title,message,events);
+                String dlgMessage = message + events[0];
+                new AlertDialog.Builder(activity).setMessage(dlgMessage).setPositiveButton("OK", null).show();
+            }catch (Exception ex){
+
+            }
+
         }
 
 

@@ -31,6 +31,8 @@ public class Movie implements Parcelable {
     private  String duration = "";
 
     public  static  final int INVALID_MOVIE_ID = -11111;
+    public  static  final String DURATION_KEY = "min";
+
 
 
     public ArrayList<String> getListeOfReviews() {
@@ -79,7 +81,7 @@ public class Movie implements Parcelable {
 
     // TODO
     public String getDuration() {
-        return this.duration + "min" ;
+        return this.duration + DURATION_KEY ;
     }
 
 

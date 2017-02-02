@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +38,6 @@ public class MoviesDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies_details);
-
 
         // Activity Title
         String title = this.getString(R.string.actionbar_details_tile);
@@ -119,14 +119,29 @@ public class MoviesDetailsActivity extends AppCompatActivity {
                         ArrayList<String> listeTrailers = new ArrayList<String>();
                         JSONArray jsonResults = movieJsonObject.getJSONArray("results");
 
+                        int count = 0; // trailer counter;
                         for (int i = 0; i < jsonResults.length(); i++){
                             JSONObject item = jsonResults.getJSONObject(i);
                             String key = item.getString("key");
                             String name = item.getString("name");
                             listeTrailers.add(key);
+                            count++; // count how many trailers we have
                         }
-                        movie.setListeOfTrailers(listeTrailers);
 
+                        // Sets the trailer layout visibility
+                        int SizeLayout = 2;
+                        int [] arrlinearTrailers = new int[SizeLayout];
+                        arrlinearTrailers[0] = R.id.linearLayoutTrailer01;
+                        arrlinearTrailers[1] = R.id.linearLayoutTrailer02;
+                        for (int i = 0; i <count ; i++){
+                            if(i < SizeLayout){
+                                LinearLayout layout = (LinearLayout)context.findViewById(arrlinearTrailers[i]) ;
+                                layout.setVisibility(View.VISIBLE);
+                            }
+                        }
+
+
+                        movie.setListeOfTrailers(listeTrailers);
                         Toast.makeText(getBaseContext(), "Trailer Count: " + listeTrailers.size() ,Toast.LENGTH_LONG).show();
 
                     } catch (JSONException e) {
@@ -192,12 +207,13 @@ public class MoviesDetailsActivity extends AppCompatActivity {
 
     private void QueryMovieDuration(final Movie movie, TextView duration) {
 
-        if(movie.getDuration().equals("min") ){
+        if(movie.getDuration().equals(Movie.DURATION_KEY) ){
 
             Toast.makeText(this,"MOVIE DURATION NULL",Toast.LENGTH_LONG).show();
 
             URL githubSearchUrl = NetworkUtils.getMovieDuration(movie.getId());
             MoviesQueryTask queryTask = new MoviesQueryTask(this, new AsyncMovieResponse() {
+
                 @Override
                 public void processMoviesQueryResults(Activity context, String output) {
 

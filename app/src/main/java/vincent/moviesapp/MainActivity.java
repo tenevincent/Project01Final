@@ -24,8 +24,6 @@ import vincent.moviesapp.model.NetworkUtils;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
     public  static  final  String MOVIE_DETAIL_KEY = "movie";
 
 
