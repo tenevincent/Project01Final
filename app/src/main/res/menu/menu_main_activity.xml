@@ -8,13 +8,15 @@
         app:showAsAction="never" />
 
 
-    <item android:id="@+id/menu_sortby_popular"
+<!--
+     <item android:id="@+id/menu_sortby_popular"
         android:title="@string/title_sortby_most_popular"
         app:showAsAction="never"/>
 
     <item android:id="@+id/menu_sortby_toprated"
         android:title="@string/title_sortby_top_rated"
         app:showAsAction="never" />
+ -->
 
 
 

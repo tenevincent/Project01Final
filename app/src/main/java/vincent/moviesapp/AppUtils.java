@@ -6,7 +6,7 @@ import android.support.v7.app.NotificationCompat;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
-/**
+/** Utilities class helper
  * Created by Tene on 01.02.2017.
  */
 

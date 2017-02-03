@@ -17,10 +17,9 @@ import java.util.Date;
 
 import vincent.moviesapp.R;
 
-/**
+/** Main movie application object
  * Created by Tene on 25.01.2017.
  */
-
 public class MovieMainApp {
 
     public static boolean HasPreferencesChanged = false;
@@ -67,14 +66,12 @@ public class MovieMainApp {
         if(null == movieQuery)
             return;
 
-
         try {
 
             JSONObject weatherObj  = new JSONObject(movieQuery);
             this.page = weatherObj.getInt("page");
             this.totalresults = weatherObj.getInt("total_results");
             this.totalpages  =weatherObj.getInt("total_pages");
-
 
             JSONArray temp = weatherObj.getJSONArray("results");
 
@@ -118,26 +115,20 @@ public class MovieMainApp {
     }
 
 
-
-
-
-
-
-    public Movie getCurrentSelectgedMovie() {
-        return currentSelectgedMovie;
-    }
-
-    public void setCurrentSelectgedMovie(Movie currentSelectgedMovie) {
-        this.currentSelectgedMovie = currentSelectgedMovie;
-    }
-
-
-
-    public ArrayList<Movie> getListeOfMovies() {
+    /** Gets the list of movie
+     *
+     * @return list of movies
+     */
+    public ArrayList<Movie> getListOfMovies() {
         return listeOfMovies;
     }
 
 
+    /** Gets a movie object by its Id
+     *
+     * @param movieId movie Id
+     * @return movie object
+     */
     public Movie getMovieById(int movieId) {
         Movie movie = null;
         for(int i = 0; i < listeOfMovies.size(); i++){

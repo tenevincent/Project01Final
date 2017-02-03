@@ -11,8 +11,6 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-
 import vincent.moviesapp.model.Movie;
 import vincent.moviesapp.model.MovieMainApp;
 
@@ -39,36 +37,31 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     @Override
     public void onBindViewHolder(final ImageViewHolder holder, final int position) {
 
-
-        final Movie movie = movieApp.getListeOfMovies().get(position);
+        final Movie movie = movieApp.getListOfMovies().get(position);
         // Sets the title
         String title = movie.getTitle();
         // Sets the image
         Picasso.with(context).load(movie.getPosterAbsolutURL()).into(holder.imageView);
-
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Toast.makeText(holder.imageView.getContext(), movie.getTitle(), Toast.LENGTH_SHORT).show();
-
                 // Start the Details Movie Activity for displaying details about the current movie!
                 Intent intent = new Intent("vincent.moviesapp.MoviesDetailsActivity");
                 Bundle bundle = new Bundle();
                 bundle.putInt(MainActivity.MOVIE_DETAIL_KEY,movie.getId());
                 intent.putExtras(bundle);
-
                 view.getContext().startActivity(intent);
+
             }
         });
     }
 
 
+
     @Override
     public int getItemCount() {
-
-        if(null != movieApp && null != movieApp.getListeOfMovies())
-            return movieApp.getListeOfMovies().size();
+        if(null != movieApp && null != movieApp.getListOfMovies())
+            return movieApp.getListOfMovies().size();
         else
             return  0;
 

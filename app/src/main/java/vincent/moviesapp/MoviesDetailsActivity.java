@@ -17,12 +17,11 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.net.URL;
 import java.util.ArrayList;
 
-import vincent.moviesapp.model.AsyncMovieResponse;
+import vincent.moviesapp.model.IAsyncMovieRequestFinished;
 import vincent.moviesapp.model.Movie;
 import vincent.moviesapp.model.MovieMainApp;
 import vincent.moviesapp.model.MoviesQueryTask;
@@ -41,7 +40,10 @@ public class MoviesDetailsActivity extends AppCompatActivity {
 
         // Activity Title
         String title = this.getString(R.string.actionbar_details_tile);
-        MovieHelper.setMovieAppActionBarTitle(this.getSupportActionBar(), title);
+        ActionBar actionbar = this.getSupportActionBar();
+        // sets the actionbar
+        if(null != actionbar)
+            actionbar.setTitle(title);
 
 
         // Gets the bundle
@@ -109,7 +111,7 @@ public class MoviesDetailsActivity extends AppCompatActivity {
 
         URL githubSearchUrl = NetworkUtils.getMovieVideoURL(movie.getId());
 
-        MoviesQueryTask queryTask = new MoviesQueryTask(this, new AsyncMovieResponse() {
+        MoviesQueryTask queryTask = new MoviesQueryTask(this, new IAsyncMovieRequestFinished() {
             @Override
             public void processMoviesQueryResults(Activity context, String output) {
 
@@ -166,7 +168,7 @@ public class MoviesDetailsActivity extends AppCompatActivity {
 
         URL githubSearchUrl = NetworkUtils.getMovieReviewsURL(movie.getId());
 
-        MoviesQueryTask queryTask = new MoviesQueryTask(this, new AsyncMovieResponse() {
+        MoviesQueryTask queryTask = new MoviesQueryTask(this, new IAsyncMovieRequestFinished() {
             @Override
             public void processMoviesQueryResults(Activity context, String output) {
 
@@ -212,7 +214,7 @@ public class MoviesDetailsActivity extends AppCompatActivity {
             Toast.makeText(this,"MOVIE DURATION NULL",Toast.LENGTH_LONG).show();
 
             URL githubSearchUrl = NetworkUtils.getMovieDuration(movie.getId());
-            MoviesQueryTask queryTask = new MoviesQueryTask(this, new AsyncMovieResponse() {
+            MoviesQueryTask queryTask = new MoviesQueryTask(this, new IAsyncMovieRequestFinished() {
 
                 @Override
                 public void processMoviesQueryResults(Activity context, String output) {

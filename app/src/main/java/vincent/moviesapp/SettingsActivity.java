@@ -6,6 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+
+/** Settings activity
+ *
+ */
 public class SettingsActivity extends AppCompatActivity {
 
     @Override

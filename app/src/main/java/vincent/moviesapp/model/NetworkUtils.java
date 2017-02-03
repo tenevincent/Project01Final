@@ -32,8 +32,8 @@ public class NetworkUtils {
 
     private static   String base_youtube_base_url = "https://www.youtube.com/watch"; // reviews URL
     final static String YOU_TUBE_QUERY = "v";
-
     final static String PARAM_QUERY = "api_key";
+
     final static String api_key_value = "810f83d9a006d9817f993a80e48ad029";
 
 

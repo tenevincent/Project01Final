@@ -1,24 +1,22 @@
 package vincent.moviesapp;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 import android.support.v7.widget.RecyclerView;
 
 import java.net.URL;
 
-import vincent.moviesapp.model.AsyncMovieResponse;
+import vincent.moviesapp.model.IAsyncMovieRequestFinished;
 import vincent.moviesapp.model.MovieMainApp;
 import vincent.moviesapp.model.MoviesQueryTask;
 import vincent.moviesapp.model.NetworkUtils;
@@ -34,16 +32,19 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Sets the actionbar
         String title = this.getString(R.string.actionbar_title_main_activity);
-        MovieHelper.setMovieAppActionBarTitle(this.getSupportActionBar(), title);
+        ActionBar actionbar = this.getSupportActionBar();
+        if(null != actionbar)
+            actionbar.setTitle(title);
+
 
         movieApp = ((MovieApplication)this.getApplication()).getMovieMainApp();
 
         // when the device is rotated a query showld not be hit again
-        if(null == movieApp && NetworkUtils.checkInternetConnection(this)){
+        if(null == movieApp && NetworkUtils.checkInternetConnection(this)){ // at the first time this activity is created!
             movieApp = new MovieMainApp(this);
             queryMoviesFromDatabase(movieApp.isMovieSortByMostPopular());
-            //  Toast.makeText(MainActivity.this, "movieApp IS NULL", Toast.LENGTH_LONG).show();
         }
         else if (MovieMainApp.HasPreferencesChanged){ // The preferences has changed!
             movieApp = new MovieMainApp(this);
@@ -52,9 +53,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
             Toast.makeText(this,"CREATED SORTING Parameter: " + movieApp.isMovieSortByMostPopular() ,Toast.LENGTH_LONG).show();
             MovieMainApp.HasPreferencesChanged = false;
-
         }
-        else if (null != movieApp){
+        else if (null != movieApp){ // the main movie object is not null!
             updateRecyclerViewUI(this);
             Toast.makeText(MainActivity.this, "movieApp non NULL", Toast.LENGTH_LONG).show();
             Toast.makeText(MainActivity.this, "OBJECT IS NON NULL!!", Toast.LENGTH_LONG).show();
@@ -92,21 +92,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
-
             case R.id.movies_settings:
                 Intent intentSettings = new Intent("vincent.moviesapp.SettingsActivity");
                 startActivity(intentSettings);
                 return  true;
-            case R.id.menu_sortby_popular:
-                //  handleSortByMostPopular();
-                Toast.makeText(MainActivity.this, "menu_sortby_popular", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent("vincent.moviesapp.MoviesDetailsActivity");
-                startActivity(intent);
-                return true;
-            case R.id.menu_sortby_toprated:
-                Toast.makeText(MainActivity.this, "menu_sortby_toprated", Toast.LENGTH_LONG).show();
-                //  handleSortByTopRated();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -116,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         URL githubSearchUrl = NetworkUtils.buildUrl(isSortByMostPopular);
 
-        MoviesQueryTask queryTask = new MoviesQueryTask(this,  new AsyncMovieResponse()
+        MoviesQueryTask queryTask = new MoviesQueryTask(this,  new IAsyncMovieRequestFinished()
         {
             @Override
             public void processMoviesQueryResults(Activity activity, String output) {
@@ -141,7 +130,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 
 
+
+
     private void updateRecyclerViewUI(Activity activity) {
+
         //  MovieMainApp movieApp = ((MovieApplication)activity.getApplication()).getMovieMainApp();
         RecyclerView recyclerView = (RecyclerView) activity.findViewById(R.id.gridViewMovies);
         recyclerView.addItemDecoration(new MarginDecoration(activity.getBaseContext()));
@@ -161,11 +153,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
-
         if (key.equals(getString(R.string.pref_sort_movie_key))) {
-
             boolean sortParameter = sharedPreferences.getBoolean(key, getResources().getBoolean(R.bool.pref_sort_movie_default));
-
             MovieMainApp.HasPreferencesChanged = false; // init to false
             // check if the new parameter is different from the old and save it on the model
             if(sortParameter != movieApp.isMovieSortByMostPopular()){

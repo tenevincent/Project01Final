@@ -4,7 +4,8 @@ import android.app.Application;
 
 import vincent.moviesapp.model.MovieMainApp;
 
-/** Movie Application serves as global object context for this application
+/** Movie Application serves as global object context for this application. This enable
+ *  the model to be available anywhere in the application
  * Created by Tene on 01.02.2017.
  */
 
