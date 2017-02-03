@@ -23,7 +23,6 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import vincent.moviesapp.model.AsyncMovieResponse;
-import vincent.moviesapp.model.EUrlRequestType;
 import vincent.moviesapp.model.Movie;
 import vincent.moviesapp.model.MovieMainApp;
 import vincent.moviesapp.model.MoviesQueryTask;
@@ -38,6 +37,7 @@ public class MoviesDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies_details);
+
 
         // Activity Title
         String title = this.getString(R.string.actionbar_details_tile);
@@ -107,50 +107,50 @@ public class MoviesDetailsActivity extends AppCompatActivity {
         Toast.makeText(this,"TRAILERS ARE NULL",Toast.LENGTH_LONG).show();
 
 
-            URL githubSearchUrl = NetworkUtils.getMovieVideoURL(movie.getId());
+        URL githubSearchUrl = NetworkUtils.getMovieVideoURL(movie.getId());
 
-            MoviesQueryTask queryTask = new MoviesQueryTask(this, new AsyncMovieResponse() {
-                @Override
-                public void processMoviesQueryResults(Activity context, String output) {
+        MoviesQueryTask queryTask = new MoviesQueryTask(this, new AsyncMovieResponse() {
+            @Override
+            public void processMoviesQueryResults(Activity context, String output) {
 
-                    try {
+                try {
 
-                        JSONObject movieJsonObject  = new JSONObject(output);
-                        ArrayList<String> listeTrailers = new ArrayList<String>();
-                        JSONArray jsonResults = movieJsonObject.getJSONArray("results");
+                    JSONObject movieJsonObject  = new JSONObject(output);
+                    ArrayList<String> listeTrailers = new ArrayList<String>();
+                    JSONArray jsonResults = movieJsonObject.getJSONArray("results");
 
-                        int count = 0; // trailer counter;
-                        for (int i = 0; i < jsonResults.length(); i++){
-                            JSONObject item = jsonResults.getJSONObject(i);
-                            String key = item.getString("key");
-                            String name = item.getString("name");
-                            listeTrailers.add(key);
-                            count++; // count how many trailers we have
-                        }
-
-                        // Sets the trailer layout visibility
-                        int SizeLayout = 2;
-                        int [] arrlinearTrailers = new int[SizeLayout];
-                        arrlinearTrailers[0] = R.id.linearLayoutTrailer01;
-                        arrlinearTrailers[1] = R.id.linearLayoutTrailer02;
-                        for (int i = 0; i <count ; i++){
-                            if(i < SizeLayout){
-                                LinearLayout layout = (LinearLayout)context.findViewById(arrlinearTrailers[i]) ;
-                                layout.setVisibility(View.VISIBLE);
-                            }
-                        }
-
-
-                        movie.setListeOfTrailers(listeTrailers);
-                        Toast.makeText(getBaseContext(), "Trailer Count: " + listeTrailers.size() ,Toast.LENGTH_LONG).show();
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    int count = 0; // trailer counter;
+                    for (int i = 0; i < jsonResults.length(); i++){
+                        JSONObject item = jsonResults.getJSONObject(i);
+                        String key = item.getString("key");
+                        String name = item.getString("name");
+                        listeTrailers.add(key);
+                        count++; // count how many trailers we have
                     }
 
+                    // Sets the trailer layout visibility
+                    int SizeLayout = 2;
+                    int [] arrlinearTrailers = new int[SizeLayout];
+                    arrlinearTrailers[0] = R.id.linearLayoutTrailer01;
+                    arrlinearTrailers[1] = R.id.linearLayoutTrailer02;
+                    for (int i = 0; i <count ; i++){
+                        if(i < SizeLayout){
+                            LinearLayout layout = (LinearLayout)context.findViewById(arrlinearTrailers[i]) ;
+                            layout.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+
+                    movie.setListeOfTrailers(listeTrailers);
+                    Toast.makeText(getBaseContext(), "Trailer Count: " + listeTrailers.size() ,Toast.LENGTH_LONG).show();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            });
-            queryTask.execute(githubSearchUrl) ;
+
+            }
+        });
+        queryTask.execute(githubSearchUrl) ;
 
     }
 
@@ -280,7 +280,6 @@ public class MoviesDetailsActivity extends AppCompatActivity {
         URL githubSearchUrl = NetworkUtils.getYoutubeTrailerURL(urlYoutube);
 
         Toast.makeText(this,githubSearchUrl.toString(),Toast.LENGTH_LONG).show();
-
         Intent videoClient = new Intent(Intent.ACTION_VIEW);
         videoClient.setData(Uri.parse(githubSearchUrl.toString()));
         startActivity(videoClient);

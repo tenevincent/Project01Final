@@ -1,5 +1,10 @@
 package vincent.moviesapp.model;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.support.v7.preference.PreferenceManager;
+import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,25 +15,54 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 
+import vincent.moviesapp.R;
+
 /**
  * Created by Tene on 25.01.2017.
  */
 
 public class MovieMainApp {
 
+    public static boolean HasPreferencesChanged = false;
     private int page;
     private int totalresults;
     private int totalpages;
     private ArrayList<Movie> listeOfMovies = new ArrayList<Movie>();
     private  Movie currentSelectgedMovie= null;
+    private  boolean isMovieSortByMostPopular = false;
 
-    public  MovieMainApp(String movieQuery){
-        extractMoviesQuery(movieQuery);
+
+    /** Gets sorting criteria: true then sort by the most popular else sort by the highest rated
+     *
+     * @return
+     */
+    public boolean isMovieSortByMostPopular() {
+        return isMovieSortByMostPopular;
+    }
+
+    /** Sets the sort criteria
+     *
+     * @param movieSortByMostPopular sort criteria
+     */
+    public void setMovieSortByMostPopular(boolean movieSortByMostPopular) {
+        isMovieSortByMostPopular = movieSortByMostPopular;
     }
 
 
+    public  MovieMainApp(Activity activity){
+        ReadPreferenceSortingParameter(activity);
+    }
 
-    private void extractMoviesQuery(String movieQuery){
+
+    private  void ReadPreferenceSortingParameter(Activity activity){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        String key = activity.getString(R.string.pref_sort_movie_key);
+        boolean sortParam = sharedPreferences.getBoolean(key, activity.getResources().getBoolean(R.bool.pref_sort_movie_default));
+        this.setMovieSortByMostPopular(sortParam);
+    }
+
+
+    public void extractMoviesQuery(String movieQuery){
 
         if(null == movieQuery)
             return;
@@ -37,7 +71,6 @@ public class MovieMainApp {
         try {
 
             JSONObject weatherObj  = new JSONObject(movieQuery);
-
             this.page = weatherObj.getInt("page");
             this.totalresults = weatherObj.getInt("total_results");
             this.totalpages  =weatherObj.getInt("total_pages");
@@ -75,51 +108,17 @@ public class MovieMainApp {
                 boolean video = item.getBoolean("video");
                 float vote_average = (float) item.getDouble("vote_average");
 
-                /*
-                Date date  =null;
-                try {
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-                    date = formatter.parse(release_date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                */
-
-
-
                 Movie movie = new Movie(poster_path, adult,overview,release_date, genre_ids, id, original_title, original_language, title, backdrop_path, popularity, vote_count, video, vote_average);
                 this.listeOfMovies.add(movie);
 
-
             }
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
     }
 
 
 
-
-    public Movie getMovieById(int movieId) {
-
-        Movie movie = null ;
-        if(null == listeOfMovies){
-            return movie;
-        }
-
-            for (int i=0; i <listeOfMovies.size();i++){
-                if(listeOfMovies.get(i).getId() == movieId){
-                    movie = listeOfMovies.get(i);
-                    break;
-                }
-            }
-
-        return movie;
-    }
 
 
 
@@ -138,38 +137,17 @@ public class MovieMainApp {
         return listeOfMovies;
     }
 
-}
 
-
-/* TODO to be removed!
-List<Movie> chairs = new ArrayList<Movie>();
-// Sort by getPopularity:
-Collections.sort(chairs, new MovieByMostPopularComparator());
-// Sort by getVoteAverage:
-Collections.sort(chairs, new MovieByHighestRateComparator());
-*/
-
-
-class MovieByMostPopularComparator implements Comparator<Movie> {
-
-    @Override
-    public int compare(Movie movie1, Movie movie2) {
-
-        Float popularity1 = Float.valueOf(movie1.getPopularity());
-        Float popularity2 = Float.valueOf(movie2.getPopularity());
-        return popularity1.compareTo(popularity2);
+    public Movie getMovieById(int movieId) {
+        Movie movie = null;
+        for(int i = 0; i < listeOfMovies.size(); i++){
+            if(listeOfMovies.get(i).getId() == movieId){
+                movie = listeOfMovies.get(i);
+                break;
+            }
+        }
+        return movie;
     }
 }
 
-
-
-class MovieByHighestRateComparator implements Comparator<Movie> {
-
-    @Override
-    public int compare(Movie movie1, Movie movie2) {
-        Float vote01 = Float.valueOf(movie1.getVoteAverage());
-        Float vote02 = Float.valueOf(movie2.getVoteAverage());
-        return vote01.compareTo(vote02);
-    }
-}
 

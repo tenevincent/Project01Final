@@ -32,6 +32,11 @@ public class MoviesQueryTask  extends AsyncTask<URL, Void, String>  {
     int unknownHostCode = -11;
 
 
+    /** Class constructor
+     *
+     * @param activity given activity or context
+     * @param responseTask response task object
+     */
     public MoviesQueryTask(Activity activity, AsyncMovieResponse responseTask) {
         this.activity = activity;
         this.responseQueryTask = responseTask;
@@ -65,7 +70,7 @@ public class MoviesQueryTask  extends AsyncTask<URL, Void, String>  {
 
 
 
-    
+
     // COMPLETED (3) Override onPostExecute to display the results in the TextView
     @Override
     protected void onPostExecute(String moviesSearchResults) {

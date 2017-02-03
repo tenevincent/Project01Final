@@ -3,8 +3,10 @@ package vincent.moviesapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
@@ -17,15 +19,15 @@ import android.support.v7.widget.RecyclerView;
 import java.net.URL;
 
 import vincent.moviesapp.model.AsyncMovieResponse;
-import vincent.moviesapp.model.EUrlRequestType;
 import vincent.moviesapp.model.MovieMainApp;
 import vincent.moviesapp.model.MoviesQueryTask;
 import vincent.moviesapp.model.NetworkUtils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    public  static  final  String MOVIE_DETAIL_KEY = "movie";
 
+    MovieMainApp movieApp ;
+    public  static  String MOVIE_DETAIL_KEY = "movie";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,21 +37,49 @@ public class MainActivity extends AppCompatActivity {
         String title = this.getString(R.string.actionbar_title_main_activity);
         MovieHelper.setMovieAppActionBarTitle(this.getSupportActionBar(), title);
 
-
-        MovieMainApp movieApp = ((MovieApplication)this.getApplication()).getMovieMainApp();
+        movieApp = ((MovieApplication)this.getApplication()).getMovieMainApp();
 
         // when the device is rotated a query showld not be hit again
         if(null == movieApp && NetworkUtils.checkInternetConnection(this)){
-            queryMoviesFromDatabase(EUrlRequestType.BY_TOP_RATED);
-            Toast.makeText(MainActivity.this, "movieApp IS NULL", Toast.LENGTH_LONG).show();
+            movieApp = new MovieMainApp(this);
+            queryMoviesFromDatabase(movieApp.isMovieSortByMostPopular());
+            //  Toast.makeText(MainActivity.this, "movieApp IS NULL", Toast.LENGTH_LONG).show();
+        }
+        else if (MovieMainApp.HasPreferencesChanged){ // The preferences has changed!
+            movieApp = new MovieMainApp(this);
+            queryMoviesFromDatabase(movieApp.isMovieSortByMostPopular());
+            Toast.makeText(MainActivity.this, "PREFERENCES HAS CHANGED!!", Toast.LENGTH_LONG).show();
+
+            Toast.makeText(this,"CREATED SORTING Parameter: " + movieApp.isMovieSortByMostPopular() ,Toast.LENGTH_LONG).show();
+            MovieMainApp.HasPreferencesChanged = false;
+
         }
         else if (null != movieApp){
             updateRecyclerViewUI(this);
             Toast.makeText(MainActivity.this, "movieApp non NULL", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "OBJECT IS NON NULL!!", Toast.LENGTH_LONG).show();
         }
 
+
+
+        registerPreferencesListener();
     }
 
+
+
+
+    private void registerPreferencesListener() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // unregister the preference listener to avoid memory leak!
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -61,43 +91,55 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
+
+            case R.id.movies_settings:
+                Intent intentSettings = new Intent("vincent.moviesapp.SettingsActivity");
+                startActivity(intentSettings);
+                return  true;
             case R.id.menu_sortby_popular:
                 //  handleSortByMostPopular();
                 Toast.makeText(MainActivity.this, "menu_sortby_popular", Toast.LENGTH_LONG).show();
-                queryMoviesFromDatabase(EUrlRequestType.BY_MOST_POPULAR);
+                Intent intent = new Intent("vincent.moviesapp.MoviesDetailsActivity");
+                startActivity(intent);
                 return true;
             case R.id.menu_sortby_toprated:
                 Toast.makeText(MainActivity.this, "menu_sortby_toprated", Toast.LENGTH_LONG).show();
-                queryMoviesFromDatabase(EUrlRequestType.BY_TOP_RATED);
+                //  handleSortByTopRated();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    private void queryMoviesFromDatabase(boolean isSortByMostPopular) {
 
-    private void queryMoviesFromDatabase(EUrlRequestType urlRequestBy) {
-
-        URL githubSearchUrl = NetworkUtils.buildUrl(urlRequestBy);
+        URL githubSearchUrl = NetworkUtils.buildUrl(isSortByMostPopular);
 
         MoviesQueryTask queryTask = new MoviesQueryTask(this,  new AsyncMovieResponse()
         {
             @Override
             public void processMoviesQueryResults(Activity activity, String output) {
 
-                ((MovieApplication)activity.getApplication()).setMovieMainApp(new MovieMainApp(output));
+                movieApp = null;
+                movieApp = new MovieMainApp(activity);
+
+                movieApp.extractMoviesQuery(output);
+                ((MovieApplication)activity.getApplication()).setMovieMainApp(movieApp);
                 updateRecyclerViewUI(activity);
             }
         }
         );
 
-       if(NetworkUtils.checkInternetConnection(this)){
+        if(NetworkUtils.checkInternetConnection(this)){
             queryTask.execute(githubSearchUrl) ;
         }
         else{
             Toast.makeText(this,"No Internet Connection is available - Main Activity",Toast.LENGTH_LONG).show();
         }
     }
+
+
 
     private void updateRecyclerViewUI(Activity activity) {
         //  MovieMainApp movieApp = ((MovieApplication)activity.getApplication()).getMovieMainApp();
@@ -112,6 +154,29 @@ public class MainActivity extends AppCompatActivity {
         ImageAdapter imageAdapter = new ImageAdapter(activity.getBaseContext());
         recyclerView.setAdapter(imageAdapter);
         imageAdapter.notifyDataSetChanged();
+    }
+
+
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+
+        if (key.equals(getString(R.string.pref_sort_movie_key))) {
+
+            boolean sortParameter = sharedPreferences.getBoolean(key, getResources().getBoolean(R.bool.pref_sort_movie_default));
+
+            MovieMainApp.HasPreferencesChanged = false; // init to false
+            // check if the new parameter is different from the old and save it on the model
+            if(sortParameter != movieApp.isMovieSortByMostPopular()){
+                movieApp.setMovieSortByMostPopular(sortParameter);
+                MovieMainApp.HasPreferencesChanged = true;
+                Toast.makeText(this,"Sorting Parameter: " + sortParameter ,Toast.LENGTH_LONG).show();
+            }
+
+        }
+
+
     }
 
 

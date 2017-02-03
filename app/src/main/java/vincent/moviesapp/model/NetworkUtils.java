@@ -90,12 +90,11 @@ public class NetworkUtils {
      *
      * @return The URL to use to query the weather server.
      */
-    public static URL buildUrl(EUrlRequestType eUrlQueryType) {
+    public static URL buildUrl(boolean isSortByMostPopular) {
 
         String strUrlQuery =MOVIE_POPULAR_BASE_URL ;
-        if(eUrlQueryType == EUrlRequestType.BY_TOP_RATED)
+        if(!isSortByMostPopular)
             strUrlQuery = MOVIE_BY_HIGHEST_RATE_BASE_URL;
-
 
         // COMPLETED (1) Fill in this method to build the proper Github query URL
         Uri builtUri = Uri.parse(strUrlQuery).buildUpon()

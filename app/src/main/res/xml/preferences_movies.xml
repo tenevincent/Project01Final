@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/pref_sort_movie_default"
+        android:key="@string/pref_sort_movie_key"
+        android:summaryOff="@string/pref_sort_by_most_popular_false"
+        android:summaryOn="@string/pref_sort_by_most_popular_true"
+        android:title="@string/pref_sort_by_movies" />
+
+</PreferenceScreen>
