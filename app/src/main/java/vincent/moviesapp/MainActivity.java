@@ -118,9 +118,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         if(NetworkUtils.checkInternetConnection(this)){
             queryTask.execute(githubSearchUrl) ;
         }
-        else{
-            Toast.makeText(this,"No Internet Connection is available - Main Activity",Toast.LENGTH_LONG).show();
-        }
+
     }
 
 
@@ -155,7 +153,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             if(sortParameter != movieApp.isMovieSortByMostPopular()){
                 movieApp.setMovieSortByMostPopular(sortParameter);
                 MovieMainApp.HasPreferencesChanged = true;
-                Toast.makeText(this,"Sorting Parameter: " + sortParameter ,Toast.LENGTH_LONG).show();
             }
 
         }

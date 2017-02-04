@@ -34,10 +34,8 @@ public class NetworkUtils {
     final static String YOU_TUBE_QUERY = "v";
     final static String PARAM_QUERY = "api_key";
 
-
     // TODO:  Add the movie api Key here
-    final static String api_key_value = "<add your API Key>";
-
+     final static String api_key_value = "<add your API Key>";
 
     /*
      * The sort field. One of stars, forks, or updated.

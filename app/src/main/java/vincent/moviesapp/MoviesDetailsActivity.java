@@ -185,7 +185,6 @@ public class MoviesDetailsActivity extends AppCompatActivity {
                         listeReviews.add(content);
                     }
                     movie.setListeOfReviews(listeReviews);
-                   // Toast.makeText(getBaseContext(), "Trailer Eviews: " + listeReviews.size() ,Toast.LENGTH_LONG).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -194,9 +193,6 @@ public class MoviesDetailsActivity extends AppCompatActivity {
 
         if(NetworkUtils.checkInternetConnection(this)){
             queryTask.execute(githubSearchUrl) ;
-        }
-        else{
-            Toast.makeText(this,"No Internet Connection is available",Toast.LENGTH_LONG).show();
         }
     }
 
@@ -209,8 +205,6 @@ public class MoviesDetailsActivity extends AppCompatActivity {
     private void QueryMovieDuration(final Movie movie, TextView duration) {
 
         if(movie.getDuration().equals(Movie.DURATION_KEY) ){
-
-            Toast.makeText(this,"MOVIE DURATION NULL",Toast.LENGTH_LONG).show();
 
             URL githubSearchUrl = NetworkUtils.getMovieDuration(movie.getId());
             MoviesQueryTask queryTask = new MoviesQueryTask(this, new IAsyncMovieRequestFinished() {
@@ -258,7 +252,6 @@ public class MoviesDetailsActivity extends AppCompatActivity {
 
         String urlYoutube = movie.getListeOfTrailers().get(0);
         URL githubSearchUrl = NetworkUtils.getYoutubeTrailerURL(urlYoutube);
-        Toast.makeText(this,githubSearchUrl.toString(),Toast.LENGTH_LONG).show();
 
         Intent videoClient = new Intent(Intent.ACTION_VIEW);
         videoClient.setData(Uri.parse(githubSearchUrl.toString()));
@@ -282,11 +275,9 @@ public class MoviesDetailsActivity extends AppCompatActivity {
         if(movie.getListeOfTrailers().size() < 2) // there is not trailer 02
             return;
 
-
         String urlYoutube = movie.getListeOfTrailers().get(1);
         URL githubSearchUrl = NetworkUtils.getYoutubeTrailerURL(urlYoutube);
 
-        Toast.makeText(this,githubSearchUrl.toString(),Toast.LENGTH_LONG).show();
         Intent videoClient = new Intent(Intent.ACTION_VIEW);
         videoClient.setData(Uri.parse(githubSearchUrl.toString()));
         startActivity(videoClient);
