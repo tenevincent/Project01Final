@@ -27,6 +27,10 @@ import vincent.moviesapp.model.MovieMainApp;
 import vincent.moviesapp.model.MoviesQueryTask;
 import vincent.moviesapp.model.NetworkUtils;
 
+
+/** Movie Details Activity
+ *
+ */
 public class MoviesDetailsActivity extends AppCompatActivity {
 
     private Movie movie ;
@@ -36,7 +40,6 @@ public class MoviesDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies_details);
-
 
         // Activity Title
         String title = this.getString(R.string.actionbar_details_tile);
@@ -52,20 +55,17 @@ public class MoviesDetailsActivity extends AppCompatActivity {
             return;
         }
 
-
-        int movieIdBundle = bundleExtras.getInt(MainActivity.MOVIE_DETAIL_KEY, Movie.INVALID_MOVIE_ID);
+        int movieId = bundleExtras.getInt(MainActivity.MOVIE_DETAIL_KEY, Movie.INVALID_MOVIE_ID);
 
         // check invalid movie ID
-        if(movieIdBundle == Movie.INVALID_MOVIE_ID){
-            Toast.makeText(this,"The current movie can not be found in the database!",Toast.LENGTH_LONG).show();
+        if(movieId == Movie.INVALID_MOVIE_ID){
             return;
         }
 
-
-
         MovieMainApp movieMainApp =   ((MovieApplication)this.getApplication()).getMovieMainApp();
 
-        movie = movieMainApp.getMovieById(movieIdBundle) ;
+        // Gets the movie by the given id
+        movie = movieMainApp.getMovieById(movieId) ;
         // Sets the title
         TextView textTitle = (TextView)findViewById(R.id.textviewTitle);
         textTitle.setText(movie.getTitle());
@@ -95,18 +95,21 @@ public class MoviesDetailsActivity extends AppCompatActivity {
         QueryMovieTrailers(movie);
 
         QueryMovieReviews(movie);
-
-
     }
 
+
+    /** Query the movie trailers
+     *
+     * @param movie movie object
+     */
     private void QueryMovieTrailers(final Movie movie) {
 
         if(movie.getListeOfTrailers() != null ){
-            Toast.makeText(this,"TRAILER NON NULL",Toast.LENGTH_LONG).show();
+           // Toast.makeText(this,"TRAILER NON NULL",Toast.LENGTH_LONG).show();
             return;
         }
 
-        Toast.makeText(this,"TRAILERS ARE NULL",Toast.LENGTH_LONG).show();
+        // Toast.makeText(this,"TRAILERS ARE NULL",Toast.LENGTH_LONG).show();
 
 
         URL githubSearchUrl = NetworkUtils.getMovieVideoURL(movie.getId());
@@ -129,7 +132,6 @@ public class MoviesDetailsActivity extends AppCompatActivity {
                         listeTrailers.add(key);
                         count++; // count how many trailers we have
                     }
-
                     // Sets the trailer layout visibility
                     int SizeLayout = 2;
                     int [] arrlinearTrailers = new int[SizeLayout];
@@ -141,22 +143,22 @@ public class MoviesDetailsActivity extends AppCompatActivity {
                             layout.setVisibility(View.VISIBLE);
                         }
                     }
-
-
                     movie.setListeOfTrailers(listeTrailers);
-                    Toast.makeText(getBaseContext(), "Trailer Count: " + listeTrailers.size() ,Toast.LENGTH_LONG).show();
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         });
+
         queryTask.execute(githubSearchUrl) ;
 
     }
 
 
+    /** query the movie reviews
+     *
+     * @param movie movie object
+     */
     private void QueryMovieReviews(final Movie movie) {
 
         if(movie == null)
@@ -171,7 +173,6 @@ public class MoviesDetailsActivity extends AppCompatActivity {
         MoviesQueryTask queryTask = new MoviesQueryTask(this, new IAsyncMovieRequestFinished() {
             @Override
             public void processMoviesQueryResults(Activity context, String output) {
-
                 try {
                     JSONObject movieJsonObject  = new JSONObject(output);
                     ArrayList<String> listeReviews= new ArrayList<String>();
@@ -183,10 +184,8 @@ public class MoviesDetailsActivity extends AppCompatActivity {
                         // Add a review to the list
                         listeReviews.add(content);
                     }
-
                     movie.setListeOfReviews(listeReviews);
-                    Toast.makeText(getBaseContext(), "Trailer Eviews: " + listeReviews.size() ,Toast.LENGTH_LONG).show();
-
+                   // Toast.makeText(getBaseContext(), "Trailer Eviews: " + listeReviews.size() ,Toast.LENGTH_LONG).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -199,14 +198,14 @@ public class MoviesDetailsActivity extends AppCompatActivity {
         else{
             Toast.makeText(this,"No Internet Connection is available",Toast.LENGTH_LONG).show();
         }
-
-
-
-
     }
 
 
-
+    /** Query the movie duraction
+     *
+     * @param movie mobie object
+     * @param duration textview duration
+     */
     private void QueryMovieDuration(final Movie movie, TextView duration) {
 
         if(movie.getDuration().equals(Movie.DURATION_KEY) ){
@@ -235,14 +234,16 @@ public class MoviesDetailsActivity extends AppCompatActivity {
             });
             queryTask.execute(githubSearchUrl) ;
         }
-
         else{
             duration.setText(movie.getDuration());
-            Toast.makeText(this,"MOVIE DURATION ALREADY LOADED",Toast.LENGTH_LONG).show();
-
         }
     }
 
+
+    /** Play the first movie trailer
+     *
+     * @param view movie view
+     */
     public void onPlayMovieTrailer01(View view) {
 
         if(null == movie)
@@ -266,6 +267,10 @@ public class MoviesDetailsActivity extends AppCompatActivity {
 
 
 
+    /** Play the second movie trailer
+     *
+     * @param view
+     */
     public void onPlayMovieTrailer02(View view) {
 
         if(null == movie)

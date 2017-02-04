@@ -1,7 +1,9 @@
 package vincent.moviesapp;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.NotificationCompat;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -36,7 +38,22 @@ public class AppUtils {
         NotificationManager mNotifyMgr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         // Builds the notification and issues it.
         mNotifyMgr.notify(notificatinId, mBuilder.build());
+    }
 
+    public static void AlertDialogServerNotFound(Activity activity) {
+        try{
+            int mNotificationId = 001;
+            String title = activity.getString(R.string.unreachable_server) ;
+            String message =activity.getString(R.string.unreachable_database_server) ;
+            String [] events = new String[2];
+            events[0] =  activity.getString(R.string.connection_not_available) ;
+            events[1] = "";
+            AppUtils.LaunchToastNotification(activity,mNotificationId,R.mipmap.ic_launcher,title,message,events);
+            String dlgMessage = message + events[0];
+            new AlertDialog.Builder(activity).setMessage(dlgMessage).setPositiveButton("OK", null).show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }

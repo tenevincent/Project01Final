@@ -3,6 +3,7 @@ package vincent.moviesapp.model;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.URL;
@@ -17,12 +18,10 @@ import vincent.moviesapp.R;
  */
 public class MoviesQueryTask  extends AsyncTask<URL, Void, String>  {
 
-
     IAsyncMovieRequestFinished responseQueryTask ;
     Activity activity;
     URL searchUrl  =null;
     int unknownHostCode = -11;
-
 
     /** Class constructor
      *
@@ -69,32 +68,16 @@ public class MoviesQueryTask  extends AsyncTask<URL, Void, String>  {
     protected void onPostExecute(String moviesSearchResults) {
 
         if(unknownHostCode == 1){
-
-            try{
-                int mNotificationId = 001;
-                String title = activity.getString(R.string.unreachable_server) ;
-                String message =activity.getString(R.string.unreachable_database_server) ;
-                String [] events = new String[2];
-                events[0] =  activity.getString(R.string.connection_not_available) ;
-                events[1] = "";
-                AppUtils.LaunchToastNotification(this.activity,mNotificationId,R.mipmap.ic_launcher,title,message,events);
-                String dlgMessage = message + events[0];
-                new AlertDialog.Builder(activity).setMessage(dlgMessage).setPositiveButton("OK", null).show();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
+            AppUtils.AlertDialogServerNotFound(activity);
         }
-
 
         if(null == moviesSearchResults){
             return;
         }
 
-
-
         responseQueryTask.processMoviesQueryResults(this.activity,  moviesSearchResults);
     }
+
 
 
 

@@ -34,7 +34,9 @@ public class NetworkUtils {
     final static String YOU_TUBE_QUERY = "v";
     final static String PARAM_QUERY = "api_key";
 
-    final static String api_key_value = "810f83d9a006d9817f993a80e48ad029";
+
+    // TODO:  Add the movie api Key here
+    final static String api_key_value = "<add your API Key>";
 
 
     /*
@@ -58,8 +60,6 @@ public class NetworkUtils {
                 activeNetwork.isConnectedOrConnecting();
         return  isConnected;
     }
-
-
 
 
     /** Gets the URL for visualize the youtube trailer

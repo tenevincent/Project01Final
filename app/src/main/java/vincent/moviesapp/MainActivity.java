@@ -49,15 +49,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         else if (MovieMainApp.HasPreferencesChanged){ // The preferences has changed!
             movieApp = new MovieMainApp(this);
             queryMoviesFromDatabase(movieApp.isMovieSortByMostPopular());
-            Toast.makeText(MainActivity.this, "PREFERENCES HAS CHANGED!!", Toast.LENGTH_LONG).show();
-
-            Toast.makeText(this,"CREATED SORTING Parameter: " + movieApp.isMovieSortByMostPopular() ,Toast.LENGTH_LONG).show();
             MovieMainApp.HasPreferencesChanged = false;
         }
         else if (null != movieApp){ // the main movie object is not null!
             updateRecyclerViewUI(this);
-            Toast.makeText(MainActivity.this, "movieApp non NULL", Toast.LENGTH_LONG).show();
-            Toast.makeText(MainActivity.this, "OBJECT IS NON NULL!!", Toast.LENGTH_LONG).show();
         }
 
 
@@ -112,10 +107,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                 movieApp = null;
                 movieApp = new MovieMainApp(activity);
-
                 movieApp.extractMoviesQuery(output);
                 ((MovieApplication)activity.getApplication()).setMovieMainApp(movieApp);
                 updateRecyclerViewUI(activity);
+
             }
         }
         );
@@ -153,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
-        if (key.equals(getString(R.string.pref_sort_movie_key))) {
+        if (key.equals(this.getString(R.string.pref_sort_movie_key))) {
             boolean sortParameter = sharedPreferences.getBoolean(key, getResources().getBoolean(R.bool.pref_sort_movie_default));
             MovieMainApp.HasPreferencesChanged = false; // init to false
             // check if the new parameter is different from the old and save it on the model
