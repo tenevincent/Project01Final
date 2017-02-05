@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         ActionBar actionbar = this.getSupportActionBar();
         if(null != actionbar)
             actionbar.setTitle(title);
-        
+
         movieApp = ((MovieApplication)this.getApplication()).getMovieMainApp();
 
         // when the device is rotated a query showld not be hit again

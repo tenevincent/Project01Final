@@ -41,9 +41,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-
             NavUtils.navigateUpFromSameTask(this);
-            // your code
             return true;
         }
 
