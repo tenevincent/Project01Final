@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,8 +38,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         ActionBar actionbar = this.getSupportActionBar();
         if(null != actionbar)
             actionbar.setTitle(title);
-
-
+        
         movieApp = ((MovieApplication)this.getApplication()).getMovieMainApp();
 
         // when the device is rotated a query showld not be hit again
@@ -54,8 +54,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         else if (null != movieApp){ // the main movie object is not null!
             updateRecyclerViewUI(this);
         }
-
-
 
         registerPreferencesListener();
     }
@@ -154,11 +152,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 movieApp.setMovieSortByMostPopular(sortParameter);
                 MovieMainApp.HasPreferencesChanged = true;
             }
-
         }
-
-
     }
+
+
 
 
 }

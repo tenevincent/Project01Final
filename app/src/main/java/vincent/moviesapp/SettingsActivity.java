@@ -4,7 +4,11 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import vincent.moviesapp.model.MovieMainApp;
 
 
 /** Settings activity
@@ -32,6 +36,18 @@ public class SettingsActivity extends AppCompatActivity {
             NavUtils.navigateUpFromSameTask(this);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+            NavUtils.navigateUpFromSameTask(this);
+            // your code
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
 }
