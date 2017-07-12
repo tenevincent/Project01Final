@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">MoviesApp</string>
+    <string name="actionbar_title_main_activity">Movies</string>
+    <string name="actionbar_details_tile">Movies Details</string>
+    <string name="title_sortby_most_popular">Sort by most popular</string>
+    <string name="title_sortby_top_rated">Sort by top rated</string>
+    <string name="mark_as_favorite">MARK AS FAVORITE</string>
+    <string name="trailers">Trailers:</string>
+    <string name="trailer_1">Trailer 1</string>
+    <string name="trailer_2">Trailer 2</string>
+
+    <string name="pref_sort_movie_key">sort_movie</string>
+    <string name="pref_sort_by_most_popular_false">by most popular</string>
+    <string name="pref_sort_by_most_popular_true"> by most highest-rated</string>
+    <string name="pref_sort_by_movies">sort movies</string>
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="unreachable_server">Unreachable Server Hostname</string>
+    <string name="unreachable_database_server">Unable to reach the movie database server!</string>
+    <string name="connection_not_available">Please make sure that you have an available internet connection!</string>
+
+
+
+</resources>
